@@ -1,3 +1,13 @@
+<?php
+include_once "config.php";
+$connection = mysqli_connect( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, );
+if ( !$connection ) {
+    throw new Exception( "Cannot connect to database" );
+}
+$query = "SELECT * FROM tasks ORDER BY date";
+$result = mysqli_query( $connection, $query );
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +33,13 @@
     <h2>Tasks Manager</h2>
     <p>This is a sample project for managing our daily tasks. We are going to use HTML, CSS, PHP, MySQL, jQuery for this project</p>
         <h4>All Tasks</h4>
+        <?php 
+        if( mysqli_num_rows( $result )==0 ){
+            ?>
+            <p>No Task Found</p>
+            <?php
+        }else{
+        ?>
         <form>
             <table>
                 <thead>
@@ -35,20 +52,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input class="label-inline" type="checkbox" value="1"></td>
-                    <td>1</td>
-                    <td>Bring Medicine for Dad</td>
-                    <td>18th May, 2019</td>
-                    <td><a href="#">Delete</a> | <a href="#">Edit</a> | <a href="#">Complete</a></td>
-                </tr>
-                <tr>
-                    <td><input class="label-inline" type="checkbox" value="1"></td>
-                    <td>2</td>
-                    <td>Submit Physics Homework</td>
-                    <td>19th May, 2019</td>
-                    <td><a href="#">Delete</a> | <a href="#">Edit</a> | <a href="#">Complete</a></td>
-                </tr>
+                <?php
+                while($data = mysqli_fetch_assoc( $result ) ) {
+                    $timestamp = strtotime( $data['date'] );
+                    $date = date( "jS M, Y", $timestamp );
+                    ?>
+                    <tr>
+                        <td><input class="label-inline" type="checkbox" value="<?php echo $data['id']; ?>"></td>
+                        <td><?php echo $data['id']; ?></td>
+                        <td><?php echo $data['task']; ?></td>
+                        <td><?php echo $date; ?></td>
+                        <td><a href="#">Delete</a> | <a href="#">Edit</a> | <a href="#">Complete</a></td>
+                    </tr>
+                    <?php
+                }
+                mysqli_close( $connection );
+                ?>
                 </tbody>
             </table>
             <select id="action">
@@ -58,6 +77,9 @@
             </select>
             <input class="button-primary" id="bulksubmit" type="submit" value="Submit">
         </form>
+        <?php
+        }
+        ?>
     <p>...</p>
     <h4>Add Tasks</h4>
     <form method="post" action="tasks.php">
