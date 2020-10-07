@@ -101,7 +101,7 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
                 <td><?php echo $data['id']; ?></td>
                 <td><?php echo $data['task']; ?></td>
                 <td><?php echo $date; ?></td>
-                <td><a href="#">Delete</a> | <a href="#">Edit</a> | <a href="#">Complete</a></td>
+                <td><a href="#">Delete</a> | <a class="complete" data-taskid="<?php echo $data['id']; ?>" href="#">Complete</a></td>
             </tr>
             <?php
         }
@@ -138,5 +138,21 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
         </fieldset>
     </form>
 </div>
+<form action="tasks.php" method="POST" id="completeform">
+    <input type="hidden" name="action" value="complete">
+    <input type="hidden" id="taskid" name="taskid">
+</form>
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+    ;(function($){
+        $(document).ready(function(){
+            $(".complete").on('click',function(){
+                var id = $(this).data("taskid");
+                $("#taskid").val(id);
+                $("#completeform").submit();
+            });
+        });
+    })(jQuery);
+</script>
 </html>

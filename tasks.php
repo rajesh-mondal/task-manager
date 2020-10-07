@@ -19,6 +19,11 @@ if ( !$connection ) {
                 mysqli_query( $connection, $query );
                 header( 'Location: index.php?added=true' );
             }
+        }else if( 'complete' == $action ){
+            $taskid = $_POST['taskid'];
+            $query = "UPDATE tasks SET complete=1 WHERE id = {$taskid} LIMIT 1";
+            mysqli_query( $connection, $query );
         }
+        header( 'Location: index.php' );
     }
 }
