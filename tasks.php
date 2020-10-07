@@ -21,9 +21,19 @@ if ( !$connection ) {
             }
         }else if( 'complete' == $action ){
             $taskid = $_POST['taskid'];
-            $query = "UPDATE tasks SET complete=1 WHERE id = {$taskid} LIMIT 1";
-            mysqli_query( $connection, $query );
+            if( $taskid ){
+                $query = "UPDATE tasks SET complete=1 WHERE id = {$taskid} LIMIT 1";
+                mysqli_query( $connection, $query );
+            }
+            header( 'Location: index.php' );
+        }else if( 'incomplete' == $action ){
+            $taskid = $_POST['taskid'];
+            if( $taskid ){
+                $query = "UPDATE tasks SET complete=0 WHERE id = {$taskid} LIMIT 1";
+                mysqli_query( $connection, $query );
+            }
+            header( 'Location: index.php' );
         }
-        header( 'Location: index.php' );
     }
 }
+mysqli_close($connection);

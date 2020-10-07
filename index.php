@@ -60,7 +60,7 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
                     <td><?php echo $cdata['id']; ?></td>
                     <td><?php echo $cdata['task']; ?></td>
                     <td><?php echo $cdate; ?></td>
-                    <td><a href="#">Delete</a> </td>
+                    <td><a class="delete" href="#">Delete</a> | <a class="incomplete" data-taskid="<?php echo $cdata['id']; ?>" href="#">Mark Incomplete</a> </td>
                 </tr>
                 <?php
             }
@@ -142,6 +142,11 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
     <input type="hidden" name="action" value="complete">
     <input type="hidden" id="taskid" name="taskid">
 </form>
+
+<form action="tasks.php" method="post" id="incompleteform">
+    <input type="hidden" name="action" value="incomplete">
+    <input type="hidden" id="itaskid" name="taskid">
+</form>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script>
@@ -151,6 +156,12 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
                 var id = $(this).data("taskid");
                 $("#taskid").val(id);
                 $("#completeform").submit();
+            });
+
+            $(".incomplete").on('click',function(){
+                var id = $(this).data("taskid");
+                $("#itaskid").val(id);
+                $("#incompleteform").submit();
             });
         });
     })(jQuery);
