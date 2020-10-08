@@ -178,6 +178,14 @@ $resultCompleteTasks = mysqli_query( $connection, $completeTasksQuery );
                     $("#deleteform").submit();
                 }
             });
+
+            $("#bulksubmit").on("click",function(){
+                if($("#action").val()=='bulkdelete'){
+                    if(!confirm("Are you sure to delete?")){
+                        return false;
+                    }
+                }
+            });
         });
     })(jQuery);
 </script>

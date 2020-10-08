@@ -49,6 +49,14 @@ if ( !$connection ) {
                 mysqli_query( $connection, $query );
             }
             header( 'Location: index.php' );
+        }else if( 'bulkdelete' == $action ){
+            $taskids = $_POST['taskids'];
+            $_taskids = join(",",$taskids);
+            if( $taskids ){
+                $query = "DELETE FROM tasks WHERE id in ($_taskids)";
+                mysqli_query( $connection, $query );
+            }
+            header( 'Location: index.php' );
         }
     }
 }
