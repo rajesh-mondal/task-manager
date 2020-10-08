@@ -40,6 +40,15 @@ if ( !$connection ) {
                 mysqli_query( $connection, $query );
             }
             header( 'Location: index.php' );
+        }else if( 'bulkcomplete' == $action ){
+            $taskids = $_POST['taskids'];
+            $_taskids = join(",",$taskids);
+            if( $taskids ){
+                $query = "UPDATE tasks SET complete=1 WHERE id in ($_taskids)";
+                //echo $query;
+                mysqli_query( $connection, $query );
+            }
+            header( 'Location: index.php' );
         }
     }
 }
